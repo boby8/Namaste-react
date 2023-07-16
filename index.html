@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Namaste React</title>
-</head>
-<body>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio, eligendi exercitationem alias ab est a. Tempore illum harum voluptatum. Ratione sit dignissimos similique dolore enim accusantium dolores at autem quia.</p>
-</body>
+  </head>
+  <body>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <div id="root"></div>
+    <script>
+      const heading = React.createElement(
+        "h1",
+        { className: "greeting" },
+        "Namaste React"
+      );
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+
+      root.render(heading);
+    </script>
+  </body>
 </html>
