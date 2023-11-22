@@ -1,6 +1,6 @@
 import { RestrauantCard } from "./RestaurantCard";
 import { restrauant } from "../src/config";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 const Body = () => {
   const [serachInput, setSearchInput] = useState("KFC"); //to create state variable
@@ -12,6 +12,21 @@ const Body = () => {
     );
     return updatedData;
   };
+  // empty depandency array => once after render
+  // dep array [searchtext]=? once after render + 
+  useEffect(()=>{
+    //API call
+    getRestaurant()
+  },[]);
+
+  async function getRestaurant(){
+    const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.93519229&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING")
+    const json =  await data.json()
+    console.log(json?.data);
+     setRestaurantList(json?.data?.cards[2]?.data?.data?.cards)
+  }
+
+  console.log("render")
   return (
     <>
       <div className="serach-container">
