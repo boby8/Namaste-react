@@ -1,33 +1,50 @@
 import { RestrauantCard } from "./RestaurantCard";
 import { restrauant } from "../src/config";
-import { useState,useEffect } from "react";
-
+import { useState, useEffect } from "react";
+import Shimmer from "./Shimmer";
 const Body = () => {
   const [serachInput, setSearchInput] = useState("KFC"); //to create state variable
-  const [restautantList, setRestaurantList] = useState(restrauant);
+  const [restautantList, setRestaurantList] = useState([]);
+  const [filteredrestautantList, setfilteredRestaurantList] = useState([]);
+  const [images, setImages] = useState([]);
 
   const filteredData = (serachInput, restautantList) => {
     const updatedData = restautantList.filter((res) =>
-      res.data.name.includes(serachInput)
+      res?.name?.toLowerCase().includes(serachInput.toLowerCase())
     );
     return updatedData;
   };
   // empty depandency array => once after render
-  // dep array [searchtext]=? once after render + 
-  useEffect(()=>{
+  // dep array [searchtext]=? once after render +
+  useEffect(() => {
     //API call
-    getRestaurant()
-  },[]);
+    getRestaurant();
+  }, []);
 
-  async function getRestaurant(){
-    const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.93519229&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING")
-    const json =  await data.json()
-    console.log(json?.data);
-     setRestaurantList(json?.data?.cards[2]?.data?.data?.cards)
+  async function getRestaurant() {
+    const data = await fetch(
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.93519229&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
+    );
+    const json = await data.json();
+    json?.data?.cards.map((res, index) => {
+      res?.card.card?.imageGridCards?.info.map((res) => {
+        const newObj = {
+          key: res?.imageId,
+        };
+        setImages((prevState) => [...prevState, newObj]);
+      });
+      res?.card.card?.gridElements?.infoWithStyle?.restaurants &&
+        res?.card.card?.gridElements?.infoWithStyle?.restaurants.map((data) => {
+          setRestaurantList((prevState) => [...prevState, data?.info]);
+          setfilteredRestaurantList((prevState) => [...prevState, data?.info]);
+        });
+    });
   }
-
-  console.log("render")
-  return (
+  console.log("render");
+  // if(filteredrestautantList.length === 0 ) return <h1>No Data Found!!</h1>
+  return restautantList.length === 0 ? (
+    <Shimmer />
+  ) : (
     <>
       <div className="serach-container">
         <input
@@ -43,15 +60,15 @@ const Body = () => {
           className="search-btn"
           onClick={() => {
             const data = filteredData(serachInput, restautantList);
-            setRestaurantList(data);
+            setfilteredRestaurantList(data);
           }}
         >
           Search
         </button>
       </div>
       <div className="restraurent-list">
-        {restautantList.map((res) => {
-          return <RestrauantCard {...res.data} key={res.data.id} />;
+        {filteredrestautantList.length === 0 ? <h1>No Data Found!!</h1>: filteredrestautantList.map((res, index) => {
+          return <RestrauantCard {...res} key={index} image={images} />;
         })}
       </div>
     </>

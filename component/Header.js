@@ -1,15 +1,16 @@
+import { useState } from "react";
 import { IMG_CDN_URL } from "../src/config";
 const Title = () => {
-  return (
-    <img
-      className="logo"
-      alt="logo"
-      src={IMG_CDN_URL}
-    />
-  );
+  return <img className="logo" alt="logo" src={IMG_CDN_URL} />;
 };
 
- const Header = () => {
+const loggedInUser = () => {
+
+  return true;
+};
+
+const Header = () => {
+  const [isLoggedIn, setloggedIn] = useState(false)
   return (
     <div className="header">
       <Title />
@@ -19,10 +20,11 @@ const Title = () => {
           <li>About</li>
           <li>Contact</li>
           <li>Cart</li>
+          {isLoggedIn ? <button onClick={()=> setloggedIn(false)}>Logout</button> : <button onClick={()=> setloggedIn(true)}>Login</button>}
         </ul>
       </div>
     </div>
   );
 };
 
-export default Header
+export default Header;
