@@ -2,9 +2,13 @@ import React from 'react'
 
 const Shimmer = () => {
   return (
-    <h1>
-      Data is loading....
-    </h1>
+    <div style={{display:'flex', gap:10, flexWrap:'wrap'}}>
+   {Array(20).fill(null).map((_, index) => (
+      <div key={index} className='shimmarClass'></div>
+    ))}
+    </div>
+ 
+    
   )
 }
 
