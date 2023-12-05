@@ -2,6 +2,7 @@ import { RestrauantCard } from "./RestaurantCard";
 import { restrauant } from "../src/config";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 const Body = () => {
   const [serachInput, setSearchInput] = useState("KFC"); //to create state variable
   const [restautantList, setRestaurantList] = useState([]);
@@ -68,7 +69,7 @@ const Body = () => {
       </div>
       <div className="restraurent-list">
         {filteredrestautantList.length === 0 ? <h1>No Data Found!!</h1>: filteredrestautantList.map((res, index) => {
-          return <RestrauantCard {...res} key={index} image={images} />;
+          return <Link to={"restaurent/" + res.id}><RestrauantCard {...res} key={index} image={images} /></Link> 
         })}
       </div>
     </>
